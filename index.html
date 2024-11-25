@@ -3,69 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analizador de Privacidad</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Inicio de Sesión con Facebook</title>
 </head>
 <body>
-  <header>
-    <h1>Analizador de Privacidad de Facebook</h1>
-  </header>
-  <main>
-    <p>Descubre qué tan expuesta está tu información personal en Facebook.</p>
-    <!-- Botón para iniciar sesión con Facebook -->
-    
-<fb:login-button 
-  scope="public_profile,email"
-  onlogin="checkLoginState();">
-</fb:login-button>
-  </main>
-  
-function checkLoginState() {
-  FB.getLoginStatus(function(response) {
-    statusChangeCallback(response);
-  });
-}
+  <h1>Bienvenido a SafeScore</h1>
+  <button id="login-btn">Iniciar sesión con Facebook</button>
+  <div id="user-info" style="display: none;">
+    <h3>Información del Usuario</h3>
+    <p><strong>Nombre:</strong> <span id="name"></span></p>
+    <p><strong>ID:</strong> <span id="id"></span></p>
+  </div>
 
-  <!-- Cargar el SDK de Facebook -->
+  <!-- SDK de Facebook -->
   <script>
     window.fbAsyncInit = function() {
       FB.init({
-        appId      : 'TU_APP_ID',  // Reemplaza con tu ID de aplicación de Facebook
+        appId      : 'TU_APP_ID',  // Reemplaza con tu App ID
         cookie     : true,
         xfbml      : true,
-        version    : 'v15.0'  // Usa la versión más actual de la API de Facebook
+        version    : 'v15.0'       // Versión actual del SDK
       });
-      
-      FB.AppEvents.logPageView();  // Registra un evento de vista de página
+
+      FB.AppEvents.logPageView();
     };
 
     (function(d, s, id){
       var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {return;}
+      if (d.getElementById(id)) return;
       js = d.createElement(s); js.id = id;
-      js.src = "https://connect.facebook.net/es_ES/sdk.js";  // SDK en español
+      js.src = "https://connect.facebook.net/es_ES/sdk.js"; // Carga el SDK
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
-  </script>
 
-  <!-- Script para manejar el inicio de sesión -->
-  <script>
-    // Función para manejar el inicio de sesión con Facebook
+    // Función para manejar el login
     document.getElementById('login-btn').onclick = function() {
       FB.login(function(response) {
         if (response.authResponse) {
-          console.log('Bienvenido, ' + response.authResponse.userID);  // Muestra el ID del usuario
-          // Aquí puedes agregar lógica para redirigir o mostrar más información
-          // Por ejemplo, redirigir al usuario después de un inicio de sesión exitoso:
-          window.location.href = 'resultados.html';  // Reemplaza con la URL que desees
-        } else {
-          console.log('El usuario no autorizó el inicio de sesión.');
-        }
-      }, { scope: 'public_profile,email' });  // Los permisos solicitados (perfil público y correo)
-    };
-  </script>
-
-  <script src="script.js"></script>
-</body>
-</html>
-
+          FB.api('/me', { fields: 'id,name' }, function(user) {
+            document.getElementById('name').innerText = user.n
