@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,30 +12,50 @@
   </header>
   <main>
     <p>Descubre qué tan expuesta está tu información personal en Facebook.</p>
+    <!-- Botón para iniciar sesión con Facebook -->
     <button id="login-btn">Iniciar sesión con Facebook</button>
   </main>
-  <script src="script.js"></script>
   
-<script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '{your-app-id}',
-      cookie     : true,
-      xfbml      : true,
-      version    : '{api-version}'
-    });
+  <!-- Cargar el SDK de Facebook -->
+  <script>
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId      : 'TU_APP_ID', // Reemplaza con tu ID de aplicación de Facebook
+        cookie     : true,
+        xfbml      : true,
+        version    : 'v15.0' // Usa la versión actual de la API de Facebook
+      });
       
-    FB.AppEvents.logPageView();   
-      
-  };
+      FB.AppEvents.logPageView();  // Registra un evento de vista de página
+    };
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "https://connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-</script>
+    (function(d, s, id){
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "https://connect.facebook.net/es_ES/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+  </script>
+
+  <!-- Script para manejar el inicio de sesión -->
+  <script>
+    // Función para manejar el inicio de sesión con Facebook
+    document.getElementById('login-btn').onclick = function() {
+      FB.login(function(response) {
+        if (response.authResponse) {
+          console.log('Bienvenido, ' + response.authResponse.userID);
+          // Aquí puedes agregar lógica para redirigir o mostrar más información
+          // Por ejemplo, redirigir al usuario después de un inicio de sesión exitoso:
+          window.location.href = 'resultados.html';  // Reemplaza con la URL que desees
+        } else {
+          console.log('El usuario no autorizó el inicio de sesión.');
+        }
+      }, { scope: 'public_profile,email' });  // Los permisos solicitados (perfil público y correo)
+    };
+  </script>
+
+  <script src="script.js"></script>
 </body>
 </html>
+
