@@ -18,10 +18,10 @@
   <script>
     window.fbAsyncInit = function() {
       FB.init({
-        appId      : 'TU_APP_ID',  // Reemplaza con tu App ID
+        appId      : '1098584878665490', // Tu App ID
         cookie     : true,
         xfbml      : true,
-        version    : 'v15.0'       // Versión actual del SDK
+        version    : 'v15.0'             // Versión del SDK
       });
 
       FB.AppEvents.logPageView();
@@ -31,13 +31,25 @@
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;
       js = d.createElement(s); js.id = id;
-      js.src = "https://connect.facebook.net/es_ES/sdk.js"; // Carga el SDK
+      js.src = "https://connect.facebook.net/es_ES/sdk.js"; // Carga el SDK de Facebook
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
-    // Función para manejar el login
+    // Función para manejar el inicio de sesión
     document.getElementById('login-btn').onclick = function() {
       FB.login(function(response) {
         if (response.authResponse) {
           FB.api('/me', { fields: 'id,name' }, function(user) {
-            document.getElementById('name').innerText = user.n
+            document.getElementById('name').innerText = user.name;
+            document.getElementById('id').innerText = user.id;
+            document.getElementById('user-info').style.display = 'block';
+          });
+        } else {
+          alert('Inicio de sesión cancelado o no autorizado.');
+        }
+      }, { scope: 'public_profile' }); // Permisos solicitados
+    };
+  </script>
+</body>
+</html>
+
